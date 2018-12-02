@@ -1,0 +1,302 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}西安科技大学图书馆管理系统 用户中心{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <meta charset="UTF-8">
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 可选的Bootstrap主题文件（一般不使用） -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>西安矿业学院图书馆系统</title>
+    <script type=text/javascript>$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};</script>
+
+
+
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+    <body>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <img src="http://nanguoyublog.qiniudn.com/xustLibheader.png" class="img-responsive" width="100%" alt="Cinque Terre">
+            <p> </p>
+                <div class="tabbable" id="tabs-811706">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#panel-405761" data-toggle="tab">馆藏检索</a>
+                        </li>
+                        <li>
+                            <a href="#panel-918044" data-toggle="tab">读者服务</a>
+                        </li>
+                        <li>
+                            <a href="#panel-918045" data-toggle="tab">归还服务</a>
+                        </li>
+                        <li>
+                            {% if uid == '10026' %}
+                                <a href="#panel-918055" data-toggle="tab">图书管理</a>
+                            {% endif %}
+                        </li>
+                        <li>
+                            {% if uid == '10026' %}
+                                <a href="#panel-918056" data-toggle="tab">用户管理</a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="panel-405761">
+                            <p></p>
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>您好!</strong> 读者{{name}}欢迎使用图书馆管理系统.
+                            </div>
+                            <form class="form-inline" action="{{ url_for("main.dashboard") }}" method="POST">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="BookName" placeholder="请输入完整图书名"/>
+                                </div> <button type="submit" id="SearchBook" class="btn btn-primary btn-lg">检索一下</button>
+                            </form>
+                            <p></p>
+                            <ul class="list-group">
+                                {% for book in SearchBookResult  %}
+                                    <li class="list-group-item">
+                                        {% if book[1]==1 %}
+                                            图书名称 {{ book[3] }}图书编号 {{ book[0] }} 图书类型 文科
+                                        {% else %}
+                                            图书名称 {{ book[3] }}图书编号 {{ book[0] }} 图书类型 理科
+                                        {% endif %}
+
+                                        {% if book[2]==1 %}
+                                            <span class="badge">图书状态 可借 </span>
+                                            <form autocomplete="on" role="form" method="POST" action="{{ url_for("main.getBook") }}">
+                                                <input class="btn btn-default" type="submit" name="gbid" value="{{ book[0] }}">
+                                            </form>
+                                        {% elif book[2]==0 %}
+                                            <span class="badge">图书状态 不可借 </span>
+                                        {% else %}
+                                            <span class="badge">图书状态 已挂失 </span>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="tab-pane" id="panel-918044">
+                            <p> </p>
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>Warning!</strong> 读者{{name}}欢迎使用读者服务。
+                            </div>
+                            <form class="form-inline" action="{{ url_for("main.dashboard") }}" method="POST">
+                                <div class="form-group">
+                                    <label class="sr-only" for="bid">请输入要推荐图书名 </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">书名</div>
+                                        <input type="text" class="form-control" id="bid" name="bname" placeholder="《Java设计模式》">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">向图书馆荐购</button>
+                            </form>
+                            <p></p>
+                            <form autocomplete="on" role="form" method="POST" action="{{ url_for("main.dashboard") }}">
+                                <input class="btn btn-primary" type="submit" name="pbook" value="向我邮箱发送推荐消息">
+                            </form>
+                            <p></p>
+                            <form class="form-inline" action="{{ url_for("main.lossBook") }}" method="POST">
+                                <div class="form-group">
+                                    <label class="sr-only" for="fbid">请输入要挂失的图书ID </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">ID</div>
+                                        <input type="text" class="form-control" id="fbid" name="fbid" placeholder="要挂失的ID">
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">挂失</button>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="panel-918045">
+                            <p></p>
+                            <div class="alert alert-warning alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>您好!</strong> 读者{{name}}还有以下书籍未还。
+                            </div>
+                            <p></p>
+                            <ul class="list-group">
+                                {% for record in records  %}
+                                    <li class="list-group-item">
+                                        <span class="badge">应还日期{{ record[3] }} </span>
+                                        图书名称 {{ record[4] }}图书编号 {{ record[2] }}
+                                        {% if record[5] %}
+                                            <button class="btn btn-primary" data-toggle="modal" data-target="#myModal">请及时缴纳欠费金额 {{ record[5] }} 元</button>
+                                            <!-- 模态框（Modal） -->
+                                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                                                &times;
+                                                            </button>
+                                                            <h4 class="modal-title" id="myModalLabel">
+                                                                扫码支付
+                                                            </h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <img src="http://nanguoyublog.qiniudn.com/alipaynanguoyu.jpg" class="img-responsive" alt="Cinque Terre" width="304" height="236">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary">
+                                                                已完成支付
+                                                            </button>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal -->
+                                            </div>
+                                        {% endif %}
+                                        <form autocomplete="on" role="form" method="POST" action="{{ url_for("main.deleteRecord") }}">
+                                            <input class="btn btn-info" type="submit" name="bid" value="{{ record[2] }}">
+                                        </form>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {% if uid == '10026' %}
+                            <div class="tab-pane" id="panel-918055">
+                                <p></p>
+                                <div class="alert alert-warning alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <strong>您好!</strong> 管理员{{name}}欢迎使用图书管理系统。
+                                </div>
+                                <form class="form-inline" action="{{ url_for("main.addBook") }}" method="POST">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="bid">请输入要入库图书的信息 </label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">书名</div>
+                                            <input type="text" class="form-control" id="newbname" name="newbname" placeholder="请输入要入库的图书书名">
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">类型</div>
+                                            <input type="text" class="form-control" id="newbtype" name="newbtype" placeholder="文科1理科0">
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">出版社</div>
+                                            <input type="text" class="form-control" id="newbpress" name="newbpress" placeholder="请输入要入库的图书出版社">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">入库</button>
+                                </form>
+                                <p></p>
+                                <form class="form-inline" action="{{ url_for("main.delBook") }}" method="POST">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="delbid">请输入要删除的图书ID </label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">书名</div>
+                                            <input type="text" class="form-control" id="delbid" name="delbid" placeholder="请输入要删除的图书ID">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">删除图书</button>
+                                </form>
+                                <p></p>
+
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                        <span class="sr-only">40% Complete (success)</span>40% 馆藏图书已借出
+                                    </div>
+                                </div>
+                                <ul class="list-group">
+                                    {% for book in AllBook  %}
+                                        <li class="list-group-item">
+                                            {% if book[1]==1 %}
+                                                图书名称 {{ book[3] }}图书编号 {{ book[0] }} 图书类型 文科
+                                            {% else %}
+                                                图书名称 {{ book[3] }}图书编号 {{ book[0] }} 图书类型 理科
+                                            {% endif %}
+
+                                            {% if book[2]==1 %}
+                                                <span class="badge">图书状态 可借 </span>
+                                            {% elif book[2]==0 %}
+                                                <span class="badge">图书状态 不可借 </span>
+                                            {% else %}
+                                                <span class="badge">图书状态 已挂失 </span>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                            </div>
+                        {% endif %}
+                        {% if uid == '10026' %}
+                            <div class="tab-pane" id="panel-918056">
+                                <p></p>
+                                <div class="alert alert-warning alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <strong>您好!</strong> 管理员{{name}}欢迎使用读者管理系统。
+                                </div>
+                                <form class="form-inline" action="{{ url_for("main.addUser") }}" method="POST">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="uid">请输入新账号的信息 </label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">用户名</div>
+                                            <input type="text" class="form-control" id="newuname" name="newuname" placeholder="请输入新用户的名称">
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">类型</div>
+                                            <input type="text" class="form-control" id="newuptype" name="newutype" placeholder="请输入新用户类型文科1理科0">
+                                        </div>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">邮箱</div>
+                                            <input type="text" class="form-control" id="newuemail" name="newuemail" placeholder="请输新用户的邮箱">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">增加用户</button>
+                                </form>
+                                <p></p>
+                                <ul class="list-group">
+                                    {% for student in AllStudent  %}
+                                        <li class="list-group-item">
+                                            {% if student[3]==1 %}
+                                                用户名 {{ student[2] }} 用户编号 {{ student[0] }} 用户类型 文科
+                                            {% else %}
+                                                用户名 {{ student[2] }} 用户编号 {{ student[0] }} 用户类型 理科
+                                            {% endif %}
+
+                                            {% if student[5]==1 %}
+                                                <span class="badge">用户状态 正常 </span>
+                                                <form class="form-inline" action="{{ url_for("main.disableUser") }}" method="POST">
+                                                    <input class="btn btn-success" type="submit" name="duid" value="{{ student[0] }}">
+                                                </form>
+                                            {% else %}
+                                                <span class="badge">用户状态 不正常 </span>
+                                                <form class="form-inline" action="{{ url_for("main.enableUser") }}" method="POST">
+                                                    <input class="btn btn-danger" type="submit" name="duid" value="{{ student[0] }}">
+                                                </form>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+
+    </div>
+    </div>
+    <div id="footer" style="border-top: 1px solid #eee;padding: 10px;">
+        <div style="text-align: center;color: #696969;">版权所有 © 2014-2017 XUSTIOT2014。 保留所有权利。雁塔校区地址：西安市雁塔路58号 临潼校区地址：西安市临潼区陕鼓大道48号</div>
+        <div style="text-align: center;color: #696969;">联系我们:<a href="mailto:admin@nanguoyu.com">邮件</a>|<a href="https://www.xust.edu.cn">学校官网</a></div>
+    </div>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}西安科技大学图书馆管理系统 用户中心{% endblock %}
+
+{% block head %}
+{{ super() }}
+    <meta charset="UTF-8">
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 可选的Bootstrap主题文件（一般不使用） -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>西安科技大学图书馆系统</title>
+
+{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block content %}
+<body>
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <img src="http://nanguoyublog.qiniudn.com/xustLibheader.png" class="img-responsive" width="100%" alt="Cinque Terre">
+
+{#            <nav class="navbar navbar-default" role="navigation">#}
+{#                <div class="navbar-header">#}
+{#                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>#}
+{#                    <a class="navbar-brand" href="#">西安科技大学</a>#}
+{#                </div>#}
+{#                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">#}
+{#                    <ul class="nav navbar-nav">#}
+{#                        <li class="active">#}
+{#                            <a href="#">Link</a>#}
+{#                        </li>#}
+{#                        <li>#}
+{#                            <a href="#">Link</a>#}
+{#                        </li>#}
+{#                        <li class="dropdown">#}
+{#                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>#}
+{#                            <ul class="dropdown-menu">#}
+{#                                <li>#}
+{#                                    <a href="#">Action</a>#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a href="#">Another action</a>#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a href="#">Something else here</a>#}
+{#                                </li>#}
+{#                                <li class="divider">#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a href="#">Separated link</a>#}
+{#                                </li>#}
+{#                                <li class="divider">#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a href="#">One more separated link</a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                    <form class="navbar-form navbar-left" role="search">#}
+{#                        <div class="form-group">#}
+{#                            <input type="text" class="form-control" />#}
+{#                        </div> <button type="submit" class="btn btn-default">Submit</button>#}
+{#                    </form>#}
+{##}
+{#                    <ul class="nav navbar-nav navbar-right">#}
+{#                        <li>#}
+{#                            <a href="#">Link</a>#}
+{#                        </li>#}
+{#                        <li class="dropdown">#}
+{#                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>#}
+{#                            <ul class="dropdown-menu">#}
+{#                                <li>#}
+{#                                    <a href="#">Action</a>#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a href="#">Another action</a>#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a href="#">Something else here</a>#}
+{#                                </li>#}
+{#                                <li class="divider">#}
+{#                                </li>#}
+{#                                <li>#}
+{#                                    <a href="#">Separated link</a>#}
+{#                                </li>#}
+{#                            </ul>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </div>#}
+{#            </nav>#}
+            <p></p>
+            <div class="row clearfix">
+                <div class="col-md-8 column">
+                    <div class="jumbotron">
+                        <h1>
+                            西安科技大学图书馆!
+                        </h1>
+                        <p>
+                            西安科技大学图书馆成立于1958年，现有雁塔校区馆和临潼校区馆两部分。雁塔校区馆建于1984年，临潼校区馆建于2002年， 2016年又扩建了2期，总面积4.07万平方米。图书馆主要组成为采编部、信息咨询部、信息技术部、学科服务部、流通阅览部、期刊阅览部。现有图书馆学情报学专业人才20人，博硕士以上学历33人，高级职称13人，能为广大师生提供高质量的文献信息服务。
+                        </p>
+                        <p>
+                            <a class="btn btn-success btn-large" href="#">获取更多</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 column">
+                    <div class="alert alert-dismissable alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4>
+                            注意!
+                        </h4> <strong>Warning!</strong> 系统测试中，请不要绑定学号. <a href="#" class="alert-link">查看详情</a>
+                    </div>
+                    {{wtf.quick_form(form)}}
+                    <p></p>
+                    <form autocomplete="on" role="form" method="POST" action="{{ url_for("main.reset") }}">
+                        <input class="btn btn-default" type="submit" name="email" value="重置密码">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-4 column">
+            <h2>
+                好消息：CASHL文献传递免费了！
+            </h2>
+            <p>
+                即日起，CASHL面向西部院校（包括我校在内）试行文献传递免费服务
+
+                免费内容：1、CASHL馆藏期刊论文文献传递服务
+
+                2、CASHL馆藏图书部分章节传递服务
+
+                使用流程：1、在CASHL主页进行个人账号注册
+
+                2、到所在学校图书馆审核开通账号
+
+                3、使用个人账号登陆检索并进行文献传递
+
+                如有需要请联系：图书馆信息咨询部 郭老师，电话：85583063-811，E-mail：lib_info@xust.edu.cn。
+
+                CASHL简介：中国高校人文社会科学文献中心（China Academic Social Sciences and Humanities Library，简称CASHL）是在教育部的统一领导下，本着“共建、共知、共享”的原则、“整体建设、分布服务”的方针，为高校哲学社会科学教学和研究建设的文献保障服务体系，是教育部高校哲学社会科学“繁荣计划”的重要组成部分，也是全国性的唯一的人文社会科学文献收藏和服务中心，其最终目标是成为“国家哲学社会科学资源平台”。
+            </p>
+            <p>
+                <a class="btn btn-success" href="http://www.cashl.edu.cn/portal/homepage.html">获取更多 »</a>
+            </p>
+        </div>
+        <div class="col-md-4 column">
+            <h2>
+                致毕业生：带一缕书香告别西科大
+            </h2>
+            <p>
+                亲爱的同学们，书是人类进步的阶梯，读书可以增长知识、读书可以开拓视野、读书可以提高修养……
+
+                为进一步落实书香校园建设，体现母校对毕业生的关爱，提高我校莘莘学子的人文素养，图书馆特为毕业生赠送“书香西科大”毕业阅读卡，为你们提供专属个人终身书房，内容包括10万册电子图书、3万集听书，账号终身有效，可支持PC、手机客户端多功能离线下载阅读。带一缕书香告别西科大，带着满满的祝福和对母校最美的记忆开始人生新的篇章……
+            </p>
+            <p>
+                <a class="btn btn-success" href="http://xakj.chineseall.cn/home/index">获取更多 »</a>
+            </p>
+        </div>
+        <div class="col-md-4 column">
+            <h2>
+                2017年主要国际学术会议预告汇总（3）
+            </h2>
+            <p>
+                世界各地每年都要举办各种国际学术会议，为专家和学者提供交流意见和讨论平台，分享在相关领域的最新研究成果，探讨新的前沿问题，发掘新的研究热点，交换各自的先进方法和技术。为了使我校专家和学者及时了解国际学术会议动态，尽早充分准备撰写相关论文，学科服务部最近对与我校学科相关主要国际会议（其中大部分是在国内召开并被检索）进行搜索、整理，请大家特别留意会议主题及论文摘要提交截至时间。预知有关会议详细信息，请点击下面的相关链接或咨询图书馆学科服务部。
+            </p>
+            <p>
+                <a class="btn btn-success" href="http://202.200.59.7/wxfw/xshyyb.htm">获取更多 »</a>
+            </p>
+        </div>
+    </div>
+
+</div>
+    <div id="footer" style="border-top: 1px solid #eee;padding: 10px;">
+        <div style="text-align: center;color: #696969;">版权所有 © 2014-2017 XUSTIOT2014。 保留所有权利。雁塔校区地址：西安市雁塔路58号 临潼校区地址：西安市临潼区陕鼓大道48号</div>
+        <div style="text-align: center;color: #696969;">联系我们:<a href="mailto:admin@nanguoyu.com">邮件</a>|<a href="https://www.xust.edu.cn">学校官网</a></div>
+    </div>
+
+
+{% endblock %}
