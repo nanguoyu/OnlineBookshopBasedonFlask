@@ -2,7 +2,7 @@
 
 ## What is this :boy:
 This project is a Flask demo for online bookshop/library website. 
-This project was finished during a internship of my undergraduate study at July 2017. We also call it Library Management System.
+It was finished during a internship of my undergraduate study at July 2017. We also call it Library Management System.
 
 The library management system mainly focuses on the online management of libraries and improves the efficiency of library management.
 The system consists of three modules, namely book management, reader management, and lending management.
